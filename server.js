@@ -14,7 +14,18 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_PIN = '2580';
 
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const DATA_FILE = path.join(__dirname, 'data', 'prices.json');
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'prices.json');
+const SEED_FILE = path.join(__dirname, 'data', 'prices.json');
+
+// Kalıcı diskte fiyat dosyası yoksa (ilk çalıştırma), depodaki
+// varsayılan verilerle oluştur.
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+if (!fs.existsSync(DATA_FILE)) {
+  fs.copyFileSync(SEED_FILE, DATA_FILE);
+}
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
