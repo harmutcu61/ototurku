@@ -1,0 +1,10 @@
+{
+  "name": "ototurkuaz-fiyat-sayfasi",
+  "version": "1.0.0",
+  "description": "Ototurkuaz fiyat sayfasi ve admin paneli",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}
