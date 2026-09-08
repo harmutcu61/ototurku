@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "shopName": "Ototurkuaz",
+    "subBrand": "Premium Servis — BMW · MINI · Land Rover · Mercedes · Audi · VW",
+    "tagline": "Markanızı tanırız, fiyatı saklamayız.",
+    "lead": "Marka, motor tipini ve parça kalitesini seçin, fiyatı görün.",
+    "whatsapp": "905XXXXXXXXX"
+  },
+  "tiers": [
+    { "tier": "Muadil", "mult": 0.55 },
+    { "tier": "Logosuz orijinal", "mult": 0.78 },
+    { "tier": "Logolu orijinal", "mult": 1.00 }
+  ],
+  "brands": {
+    "BMW": {
+      "multiplier": 1.00, "color": "#1E5AA8", "logo": "logos/bmw.png",
+      "engines": [
+        { "name": "2.0i Benzinli", "factor": 0.95 },
+        { "name": "2.0d Dizel", "factor": 1.05 },
+        { "name": "3.0d Dizel (Six)", "factor": 1.30 }
+      ]
+    },
+    "MINI": {
+      "multiplier": 0.95, "color": "#C8102E", "logo": "logos/mini.png",
+      "engines": [
+        { "name": "1.5 Benzinli (Cooper)", "factor": 0.85 },
+        { "name": "2.0 Benzinli (Cooper S)", "factor": 0.95 },
+        { "name": "2.0 Dizel (Cooper D)", "factor": 1.00 }
+      ]
+    },
+    "Land Rover": {
+      "multiplier": 1.15, "color": "#04492F", "logo": "logos/landrover.png",
+      "engines": [
+        { "name": "2.0 Ingenium Benzinli", "factor": 1.00 },
+        { "name": "2.0 Ingenium Dizel", "factor": 1.10 },
+        { "name": "3.0 D6 Dizel", "factor": 1.35 }
+      ]
+    },
+    "Mercedes": {
+      "multiplier": 1.05, "color": "#4A4A4A", "logo": "logos/mercedes.png",
+      "engines": [
+        { "name": "2.0 Benzinli (Dört Silindir)", "factor": 0.95 },
+        { "name": "2.0 Dizel (Dört Silindir)", "factor": 1.05 },
+        { "name": "3.0 Dizel (Six)", "factor": 1.30 }
+      ]
+    },
+    "Audi": {
+      "multiplier": 1.00, "color": "#8C8C8C", "logo": "logos/audi.png",
+      "engines": [
+        { "name": "2.0 TFSI Benzinli", "factor": 0.95 },
+        { "name": "2.0 TDI Dizel", "factor": 1.05 },
+        { "name": "3.0 TDI Dizel (Six)", "factor": 1.30 }
+      ]
+    },
+    "VW": {
+      "multiplier": 0.85, "color": "#1B4FA0", "logo": "logos/vw.png",
+      "engines": [
+        { "name": "1.5 TSI Benzinli", "factor": 0.80 },
+        { "name": "2.0 TSI Benzinli", "factor": 0.90 },
+        { "name": "2.0 TDI Dizel", "factor": 0.95 }
+      ]
+    }
+  },
+  "sections": {
+    "maintenance": {
+      "title": "Bakım paketleri",
+      "hint": "Muadil, logosuz orijinal veya logolu orijinal parça seçebilirsiniz.",
+      "items": [
+        { "name": "Yağ bakımı", "desc": "Motor yağı + filtre", "base": 3400 },
+        { "name": "Küçük bakım", "desc": "Yağ bakımı + hava/polen filtresi", "base": 5600 },
+        { "name": "Büyük bakım", "desc": "Küçük bakım + yakıt filtresi, buji/DPF kontrolü", "base": 9200 }
+      ]
+    },
+    "brakes": {
+      "title": "Disk & balata",
+      "hint": "Muadil, logosuz orijinal veya logolu orijinal parça seçebilirsiniz.",
+      "items": [
+        { "name": "Ön disk", "desc": "Çift", "base": 4400 },
+        { "name": "Ön balata", "desc": "Set", "base": 2200 },
+        { "name": "Arka disk", "desc": "Çift", "base": 3800 },
+        { "name": "Arka balata", "desc": "Set", "base": 1900 }
+      ]
+    },
+    "filters": {
+      "title": "İç filtre",
+      "hint": "Kabin (polen) filtresi.",
+      "items": [
+        { "name": "İç filtre", "desc": "Kabin (polen) filtresi", "base": 450 }
+      ]
+    },
+    "wipers": {
+      "title": "Silecek lastiği",
+      "hint": "Ön ve arka silecek.",
+      "items": [
+        { "name": "Silecek takımı (ön)", "desc": "Sürücü + yolcu tarafı", "base": 1400 },
+        { "name": "Silecek lastiği (arka)", "desc": "Tek parça", "base": 650 }
+      ]
+    },
+    "washer": {
+      "title": "Cam suyu",
+      "hint": "",
+      "items": [
+        { "name": "Cam suyu (4L)", "desc": "Yaz/kış", "base": 320 }
+      ]
+    }
+  }
+}
