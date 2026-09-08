@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ototurkuaz | Bakım &amp; Disk-Balata Fiyatları</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0C;
+    --panel:#171718;
+    --panel-light:#212122;
+    --text:#F2F2F2;
+    --text-dim:#98989B;
+    --accent:#E4132A;
+    --accent-text:#FFFFFF;
+    --divider:#2C2C2E;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased; padding-bottom:96px; line-height:1.4;
+  }
+  a{color:inherit;}
+
+  header{padding:28px 20px 22px;border-bottom:1px solid var(--divider);}
+  .brandmark{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .brandmark .mark{
+    width:40px;height:40px;border-radius:10px;background:var(--accent);color:var(--accent-text);
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+    font-size:16px;flex-shrink:0;letter-spacing:-0.02em;
+  }
+  .brandmark .names{display:flex;flex-direction:column;}
+  .brandmark .brand{font-size:19px;font-weight:800;letter-spacing:-0.01em;}
+  .brandmark .sub{font-size:12.5px;color:var(--text-dim);margin-top:1px;}
+  h1{font-size:22px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
+  header p.lead{font-size:14px;color:var(--text-dim);margin:0;max-width:34ch;}
+
+  section.selector{padding:22px 20px 6px;}
+  .field-label{font-size:13px;color:var(--text-dim);margin-bottom:9px;}
+
+  .chip-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;}
+  .chip{
+    background:#FFFFFF;
+    border-radius:12px;
+    border:2px solid transparent;
+    padding:8px 12px;
+    display:flex;align-items:center;gap:8px;
+    cursor:pointer;
+    min-width:84px;
+    transition:border-color .15s ease, transform .1s ease;
+  }
+  .chip.active{border-color:var(--accent);}
+  .chip:active{transform:scale(0.97);}
+  .chip img{height:22px;max-width:64px;width:auto;object-fit:contain;display:block;}
+  .chip .fallback{display:flex;align-items:center;gap:7px;}
+  .chip .fallback .badge{
+    width:22px;height:22px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:9.5px;font-weight:800;
+  }
+  .chip .fallback .bname{color:#141414;font-size:13px;font-weight:700;}
+
+  select#engineSelect{
+    width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--divider);
+    background:var(--panel);color:var(--text);font-size:15px;font-family:inherit;
+    margin-bottom:8px;appearance:none;-webkit-appearance:none;
+    background-image:linear-gradient(45deg, transparent 50%, var(--text-dim) 50%), linear-gradient(135deg, var(--text-dim) 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px, 5px 5px;background-repeat:no-repeat;
+  }
+
+  section.block{padding:26px 20px 6px;}
+  .block h2{font-size:16px;font-weight:700;margin:0 0 3px;}
+  .block p.hint{font-size:13px;color:var(--text-dim);margin:0 0 16px;}
+
+  .item-card{
+    background:var(--panel);border:1px solid var(--divider);border-radius:var(--radius);
+    padding:15px 16px;margin-bottom:12px;
+  }
+  .item-card .iname{font-size:15px;font-weight:600;}
+  .item-card .idesc{font-size:12.5px;color:var(--text-dim);margin:2px 0 11px;}
+  .tier-row{display:flex;gap:7px;}
+  .tier-btn{
+    flex:1;min-width:0;padding:10px 6px;border-radius:9px;border:1px solid var(--divider);
+    background:var(--bg);cursor:pointer;text-align:center;transition:border-color .15s ease, background .15s ease;
+  }
+  .tier-btn.active{border-color:var(--accent);background:var(--panel-light);}
+  .tier-btn .tlabel{font-size:11px;color:var(--text-dim);line-height:1.25;}
+  .tier-btn.active .tlabel{color:var(--text);}
+  .tier-btn .tprice{font-size:13.5px;font-weight:700;margin-top:4px;}
+
+  .fineprint{padding:22px 20px 4px;font-size:12px;color:var(--text-dim);}
+
+  .sticky-bar{
+    position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--divider);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;
+  }
+  .sticky-bar .totals{flex:1;min-width:0;}
+  .sticky-bar .totals .count{font-size:12px;color:var(--text-dim);}
+  .sticky-bar .totals .sum{font-size:18px;font-weight:800;}
+  .sticky-bar button{
+    background:var(--accent);color:var(--accent-text);border:none;bord
