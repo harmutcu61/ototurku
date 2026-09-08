@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ototurkuaz | Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0C; --panel:#171718; --panel-light:#212122;
+    --text:#F2F2F2; --text-dim:#98989B; --accent:#E4132A;
+    --divider:#2C2C2E; --danger:#D9694F; --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    padding:20px 16px 80px; max-width:760px; margin-inline:auto;
+  }
+  h1{font-size:20px;margin:6px 0 2px;}
+  h2{font-size:15px;margin:0 0 12px;color:var(--text);}
+  p.hint{font-size:12.5px;color:var(--text-dim);margin:0 0 16px;}
+  .card{background:var(--panel);border:1px solid var(--divider);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+  label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:5px;}
+  input[type=text],input[type=number],textarea{
+    width:100%;padding:9px 11px;border-radius:8px;border:1px solid var(--divider);
+    background:var(--bg);color:var(--text);font-size:14px;font-family:inherit;margin-bottom:12px;
+  }
+  input[type=color]{
+    width:48px;height:36px;border-radius:8px;border:1px solid var(--divider);background:var(--bg);
+    padding:2px;cursor:pointer;margin-bottom:12px;
+  }
+  textarea{resize:vertical;min-height:44px;}
+  .row{display:flex;gap:10px;align-items:flex-end;}
+  .row > div{flex:1;min-width:0;}
+  .brand-block{border-top:1px solid var(--divider);padding-top:14px;margin-top:14px;}
+  .brand-block:first-child{border-top:none;padding-top:0;margin-top:0;}
+  .brand-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .brand-head .bname{font-size:15px;font-weight:700;flex:1;}
+  .engine-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:8px;}
+  .engine-row div{flex:1;}
+  .item-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:8px;}
+  .item-row div{flex:1;}
+  .item-row .base-field{flex:0 0 90px;}
+  button{
+    font-family:inherit;cursor:pointer;border:none;border-radius:8px;
+    font-size:13.5px;font-weight:600;padding:9px 14px;
+  }
+  .btn-add{background:var(--panel-light);color:var(--text);border:1px solid var(--divider);width:100%;margin-top:2px;}
+  .btn-del{background:transparent;color:var(--danger);border:1px solid var(--divider);padding:9px 10px;flex:0 0 auto;}
+  .btn-save{background:var(--accent);color:#FFFFFF;width:100%;padding:14px;font-size:15px;position:sticky;bottom:16px;}
+  .save-bar{margin-top:20px;}
+  .msg{font-size:13px;padding:10px 12px;border-radius:8px;margin-top:10px;display:none;}
+  .msg.ok{display:block;background:#1D7B74;color:#fff;}
+  .msg.err{display:block;background:var(--danger);color:#fff;}
+
+  #loginScreen{max-width:320px;margin:80px auto 0;text-align:center;}
+  #loginScreen h1{margin-bottom:18px;}
+  #loginScreen button{background:var(--accent);color:#FFFFFF;width:100%;padding:12px;font-size:15px;margin-top:8px;}
+  #loginErr{color:var(--danger);font-size:13px;margin-top:8px;display:none;}
+  a.view-link{color:var(--accent);font-size:13px;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <h1>Ototurkuaz Admin</h1>
+  <label for="pinInput">PIN</label>
+  <input type="text" inputmode="numeric" id="pinInput" placeholder="••••">
+  <button onclick="tryLogin()">Giriş yap</button>
+  <div id="loginErr">Hatalı PIN, tekrar deneyin.</div>
+</div>
+
+<div id="adminScreen" style="display:none;">
+  <h1>Fiyat &amp; Ayarlar Paneli</h1>
+  <p class="hint"><a class="view-link" href="/" target="_blank">Müşteri sayfasını görüntüle →</a></p>
+
+  <div class="card">
+    <h2>Genel</h2>
+    <label>Dükkan adı</label>
+    <input type="text" id="f-shopName">
+    <label>Alt başlık (markalar satırı)</label>
+    <input type="text" id="f-subBrand">
+    <label>Slogan (sayfa başlığı)</label>
+    <input type="text" id="f-tagline">
+    <label>Açıklama (slogan altı)</label>
+    <textarea id="f-lead"></textarea>
+    <label>WhatsApp numarası (ülke kodlu, boşluksuz — örn. 905XXXXXXXXX)</label>
+    <input type="text" id="f-whatsapp">
+  </div>
+
+  <div class="card">
+    <h2>Parça kalitesi çarpanları</h2>
+    <p class="hint">Her kalemin fiyatı, aşağıdaki referans (logolu orijinal) fiyat × bu çarpanlarla hesaplanır.</p>
+    <div id="tiersHost"></div>
+  </div>
+
+  <div class="card">
+    <h2>Markalar &amp; motor tipleri</h2>
+    <p class="hint">Marka rengi, müşteri sayfasında o marka seçildiğinde vurgu (accent) rengi olarak kullanılır.</p>
+    <div id="brandsHost"></div>
+  </div>
+
+  <div class="card">
+    <h2>Kalemler (bakım, disk-balata, filtre, silecek, cam suyu)</h2>
+    <p class="hint">Her kalem için girilen fiyat, "logolu orijinal" referans fiyatıdır.</p>
+    <div id="sectionsHost"></div>
+  </div>
+
+  <div class="save-bar">
+    <button class="btn-save" onclick="saveAll()">Kaydet</button>
+    <div class="msg" id="saveMsg"></div>
+  </div>
+</div>
+
+<script>
+let PIN = null;
+let DATA = null;
+
+function tryLogin(){
+  const val = document.getElementById('pinInput').value.trim();
+  if (!val) return;
+  PIN = val;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminScreen').style.display = 'block';
+  loadData();
+}
+
+async function loadData(){
+  const r = await fetch('/api/prices');
+  DATA = await r.json();
+  renderGeneral();
+  renderTiers();
+  renderBrands();
+  renderSections();
+}
+
+function renderGeneral(){
+  document.getElementById('f-shopName').value = DATA.meta.shopName || '';
+  document.getElementById('f-subBrand').value = DATA.meta.subBrand || '';
+  document.getElementById('f-tagline').value = DATA.meta.tagline || '';
+  document.getElementById('f-lead').value = DATA.meta.lead || '';
+  document.getElementById('f-whatsapp').value = DATA.meta.whatsapp || '';
+}
+
+function renderTiers(){
+  const host = document.getElementById('tiersHost');
+  host.innerHTML = '';
+  DATA.tiers.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <div><label>Ad</label><input type="text" value="${t.tier}" data-tier-name="${i}"></div>
+      <div><label>Çarpan</label><input type="number" step="0.01" value="${t.mult}" data-tier-mult="${i}"></div>
+    `;
+    host.appendChild(row);
+  });
+  host.querySelectorAll('[data-tier-name]').forEach(el => {
+    el.oninput = () => DATA.tiers[el.dataset.tierName].tier = el.value;
+  });
+  host.querySelectorAll('[data-tier-mult]').forEach(el => {
+    el.oninput = () => DATA.tiers[el.dataset.tierMult].mult = parseFloat(el.value) || 0;
+  });
+}
+
+function renderBrands(){
+  const host = document.getElementById('brandsHost');
+  host.innerHTML = '';
+  Object.keys(DATA.brands).forEach(brandName => {
+    const b = DATA.brands[brandName];
+    const block = document.createElement('div');
+    block.className = 'brand-block';
+    block.innerHTML = `
+      <div class="brand-head">
+        <input type="color" value="${b.color}" data-brand-color="${brandName}">
+        <div class="bname">${brandName}</div>
+        <div style="flex:0 0 90px;">
+          <label style="margin-bottom:2px;">Marka çarpanı</label>
+          <input type="number" step="0.01" value="${b.multiplier}" data-brand-mult="${brandName}">
+        </div>
+      </div>
+      <label>Logo dosya yolu (public/logos/ klasörüne koyduğunuz dosyanın adı)</label>
+      <input type="text" value="${b.logo || ''}" placeholder="logos/marka.png" data-brand-logo="${brandName}">
+      <div data-engine-list="${brandName}"></div>
+      <button class="btn-add" data-add-engine="${brandName}">+ Motor tipi ekle</button>
+    `;
+    host.appendChild(block);
+
+    const engineList = block.querySelector(`[data-engine-list="${brandName}"]`);
+    function renderEngines(){
+      engineList.innerHTML = '';
+      b.engines.forEach((eng, ei) => {
+        const row = document.createElement('div');
+        row.className = 'engine-row';
+        row.innerHTML = `
+          <div><input type="text" value="${eng.name}" placeholder="Motor tipi adı" data-eng-name="${ei}"></div>
+          <div style="flex:0 0 80px;"><input type="number" step="0.01" value="${eng.factor}" data-eng-factor="${ei}"></div>
+          <button class="btn-del" data-eng-del="${ei}">Sil</button>
+        `;
+        row.querySelector('[data-eng-name]').oninput = (e) => eng.name = e.target.value;
+        row.querySelector('[data-eng-factor]').oninput = (e) => eng.factor = parseFloat(e.target.value) || 0;
+        row.querySelector('[data-eng-del]').onclick = () => {
+          b.engines.splice(ei, 1);
+          renderEngines();
+        };
+        engineList.appendChild(row);
+      });
+    }
+    renderEngines();
+
+    block.querySelector('[data-add-engine]').onclick = () => {
+      b.engines.push({ name: 'Yeni motor tipi', factor: 1.0 });
+      renderEngines();
+    };
+    block.querySelector('[data-brand-color]').oninput = (e) => b.color = e.target.value;
+    block.querySelector('[data-brand-mult]').oninput = (e) => b.multiplier = parseFloat(e.target.value) || 0;
+    block.querySelector('[data-brand-logo]').oninput = (e) => b.logo = e.target.value;
+  });
+}
+
+function renderSections(){
+  const host = document.getElementById('sectionsHost');
+  host.innerHTML = '';
+  Object.keys(DATA.sections).forEach(sectionKey => {
+    const sec = DATA.sections[sectionKey];
+    const block = document.createElement('div');
+    block.className = 'brand-block';
+    block.innerHTML = `
+      <div class="brand-head">
+        <div class="bname">${sec.title}</div>
+      </div>
+      <label>Bölüm başlığı</label>
+      <input type="text" value="${sec.title}" data-sec-title="${sectionKey}">
+      <label>Alt açıklama</label>
+      <input type="text" value="${sec.hint || ''}" data-sec-hint="${sectionKey}">
+      <div data-item-list="${sectionKey}" style="margin-top:8px;"></div>
+      <button class="btn-add" data-add-item="${sectionKey}">+ Kalem ekle</button>
+    `;
+    host.appendChild(block);
+
+    block.querySelector('[data-sec-title]').oninput = (e) => sec.title = e.target.value;
+    block.querySelector('[data-sec-hint]').oninput = (e) => sec.hint = e.target.value;
+
+    const itemList = block.querySelector(`[data-item-list="${sectionKey}"]`);
+    function renderItems(){
+      itemList.innerHTML = '';
+      sec.items.forEach((item, ii) => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div><label style="margin-bottom:2px;">Ad</label><input type="text" value="${item.name}" data-it-name="${ii}"></div>
+          <div><label style="margin-bottom:2px;">Açıklama</label><input type="text" value="${item.desc}" data-it-desc="${ii}"></div>
+          <div class="base-field"><label style="margin-bottom:2px;">Fiyat (₺)</label><input type="number" step="10" value="${item.base}" data-it-base="${ii}"></div>
+          <button class="btn-del" data-it-del="${ii}">Sil</button>
+        `;
+        row.querySelector('[data-it-name]').oninput = (e) => item.name = e.target.value;
+        row.querySelector('[data-it-desc]').oninput = (e) => item.desc = e.target.value;
+        row.querySelector('[data-it-base]').oninput = (e) => item.base = parseFloat(e.target.value) || 0;
+        row.querySelector('[data-it-del]').onclick = () => {
+          sec.items.splice(ii, 1);
+          renderItems();
+        };
+        itemList.appendChild(row);
+      });
+    }
+    renderItems();
+
+    block.querySelector('[data-add-item]').onclick = () => {
+      sec.items.push({ name: 'Yeni kalem', desc: '', base: 0 });
+      renderItems();
+    };
+  });
+}
+
+async function saveAll(){
+  DATA.meta.shopName = document.getElementById('f-shopName').value;
+  DATA.meta.subBrand = document.getElementById('f-subBrand').value;
+  DATA.meta.tagline = document.getElementById('f-tagline').value;
+  DATA.meta.lead = document.getElementById('f-lead').value;
+  DATA.meta.whatsapp = document.getElementById('f-whatsapp').value;
+
+  const msg = document.getElementById('saveMsg');
+  try {
+    const r = await fetch('/api/prices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-pin': PIN },
+      body: JSON.stringify(DATA)
+    });
+    if (r.status === 401) {
+      msg.className = 'msg err';
+      msg.textContent = 'Hatalı PIN — kaydedilemedi. Sayfayı yenileyip tekrar giriş yapın.';
+      return;
+    }
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      msg.className = 'msg err';
+      msg.textContent = 'Kaydedilemedi: ' + (e.error || 'bilinmeyen hata');
+      return;
+    }
+    msg.className = 'msg ok';
+    msg.textContent = 'Kaydedildi. Müşteri sayfası yeni fiyatları gösterecek.';
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = 'Bağlantı hatası: ' + e.message;
+  }
+}
+
+document.getElementById('pinInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') tryLogin();
+});
+</script>
+</body>
+</html>
