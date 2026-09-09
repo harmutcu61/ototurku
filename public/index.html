@@ -38,18 +38,16 @@
   header{padding:28px 20px 22px;border-bottom:1px solid var(--divider);}
   .brandmark{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
   .brandmark .mark{
-    width:40px;height:40px;border-radius:10px;
-    background:linear-gradient(135deg, var(--accent), var(--accent-2));
-    color:var(--accent-text);
-    display:flex;align-items:center;justify-content:center;font-weight:800;
-    font-size:16px;flex-shrink:0;letter-spacing:-0.02em;
-    box-shadow:0 4px 14px rgba(179,18,46,0.35);
+    width:42px;height:42px;flex-shrink:0;
+    filter:drop-shadow(0 4px 10px rgba(179,18,46,0.35));
   }
+  .brandmark .mark svg{display:block;}
   .brandmark .names{display:flex;flex-direction:column;}
   .brandmark .brand{font-size:19px;font-weight:800;letter-spacing:-0.01em;}
   .brandmark .sub{font-size:12.5px;color:var(--text-dim);margin-top:1px;}
   h1{font-size:22px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
-  header p.lead{font-size:14px;color:var(--text-dim);margin:0;max-width:34ch;}
+  header p.lead{font-size:14px;color:var(--text-dim);margin:0 0 8px;max-width:34ch;}
+  header p.warm{font-size:12.5px;color:var(--text-dim);margin:0;max-width:36ch;font-style:italic;opacity:.85;}
 
   /* ---------- Öne çıkan özellik banner'ı ---------- */
   .feature-banner{
@@ -71,6 +69,36 @@
   .feature-banner .ficon svg{width:19px;height:19px;color:#fff;}
   .feature-banner .ftext .ftitle{font-size:14.5px;font-weight:700;margin-bottom:3px;letter-spacing:-0.01em;}
   .feature-banner .ftext .fdesc{font-size:12.5px;color:var(--text-dim);line-height:1.45;}
+
+  .call-banner{
+    margin:12px 20px 0;
+    padding:14px 16px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius:var(--radius);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    box-shadow:0 6px 18px rgba(179,18,46,0.3);
+  }
+  .call-banner .cicon{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    background:rgba(255,255,255,0.18);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .call-banner .cicon svg{width:17px;height:17px;color:#fff;}
+  .call-banner .ctext{flex:1;color:#fff;}
+  .call-banner .ctext .ctitle{font-size:14px;font-weight:700;}
+  .call-banner .ctext .csub{font-size:11.5px;opacity:.85;margin-top:1px;}
+  .call-banner .carrow{color:#fff;opacity:.8;flex-shrink:0;}
+
+  .closing-note{
+    text-align:center;
+    font-size:13px;
+    color:var(--text-dim);
+    padding:8px 20px 0;
+    font-style:italic;
+  }
 
   section.selector{padding:22px 20px 6px;}
   .field-label{font-size:13px;color:var(--text-dim);margin-bottom:11px;}
@@ -166,6 +194,18 @@
 <script>
 const waSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.24 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24m-4.53 4.2c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.7 2.72 4.2 3.7.59.24 1.05.38 1.4.49.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.46-.28-.24-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.35-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.29.36-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.42h-.42z"/></svg>';
 const keySvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/><path d="M15.5 7.5l3 3L21 8l-3-3"/></svg>';
+const phoneSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
+const arrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg>';
+const hexLogo = `<svg viewBox="0 0 44 44" width="42" height="42">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B3122E"/>
+      <stop offset="100%" stop-color="#7A0E20"/>
+    </linearGradient>
+  </defs>
+  <polygon points="22,2 39.32,12 39.32,32 22,42 4.68,32 4.68,12" fill="url(#hexGrad)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <text x="22" y="27" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="14" fill="#fff" letter-spacing="-0.5">OT</text>
+</svg>`;
 
 let DATA = null;
 let state = { brand: null, engine: null, selected: new Set() };
@@ -192,7 +232,7 @@ function buildLayout(){
   app.innerHTML = `
     <header>
       <div class="brandmark">
-        <div class="mark">OT</div>
+        <div class="mark">${hexLogo}</div>
         <div class="names">
           <div class="brand">${DATA.meta.shopName}</div>
           <div class="sub">${DATA.meta.subBrand}</div>
@@ -200,6 +240,7 @@ function buildLayout(){
       </div>
       <h1>${DATA.meta.tagline}</h1>
       <p class="lead">${DATA.meta.lead}</p>
+      <p class="warm">Kendinize zaman ayırın, keyfinize bakın — biz buradayız.</p>
     </header>
 
     <div class="feature-banner">
@@ -210,6 +251,15 @@ function buildLayout(){
       </div>
     </div>
 
+    <a class="call-banner" href="tel:+${DATA.meta.whatsapp}">
+      <div class="cicon">${phoneSvg}</div>
+      <div class="ctext">
+        <div class="ctitle">BMW Asistan ile hızlı destek alın</div>
+        <div class="csub">Dokunun, hemen arayalım</div>
+      </div>
+      <div class="carrow">${arrowSvg}</div>
+    </a>
+
     <section class="selector">
       <div class="field-label">Marka</div>
       <div class="chip-row" id="brandChips"></div>
@@ -218,6 +268,8 @@ function buildLayout(){
     </section>
 
     <div id="sectionsHost"></div>
+
+    <p class="closing-note">OtoTurkuaz ile sürüşe kaldığınız yerden devam edin.</p>
 
     <p class="fineprint">
       Fiyatlar örnek/taslak niteliğindedir ve güncel liste ile değişebilir. Kesin fiyat için servis danışmanımız teyit eder.
