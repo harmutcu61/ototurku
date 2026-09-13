@@ -100,6 +100,7 @@
     <h2>Markalar &amp; motor tipleri</h2>
     <p class="hint">Marka rengi, müşteri sayfasında o marka seçildiğinde vurgu (accent) rengi olarak kullanılır.</p>
     <div id="brandsHost"></div>
+    <button class="btn-add" onclick="addBrand()">+ Marka ekle</button>
   </div>
 
   <div class="card">
@@ -173,12 +174,13 @@ function renderBrands(){
     block.className = 'brand-block';
     block.innerHTML = `
       <div class="brand-head">
-        <input type="color" value="${b.color}" data-brand-color="${brandName}">
-        <div class="bname">${brandName}</div>
+        <input type="color" value="${b.color}" data-brand-color="${brandName}" style="margin-bottom:0;">
+        <input type="text" class="bname-field" value="${brandName}" data-brand-name="${brandName}" style="flex:1;margin-bottom:0;font-weight:700;">
         <div style="flex:0 0 90px;">
           <label style="margin-bottom:2px;">Marka çarpanı</label>
           <input type="number" step="0.01" value="${b.multiplier}" data-brand-mult="${brandName}">
         </div>
+        <button class="btn-del" data-del-brand="${brandName}" title="Markayı sil">Sil</button>
       </div>
       <label>Logo dosya yolu (public/logos/ klasörüne koyduğunuz dosyanın adı)</label>
       <input type="text" value="${b.logo || ''}" placeholder="logos/marka.png" data-brand-logo="${brandName}">
@@ -216,7 +218,55 @@ function renderBrands(){
     block.querySelector('[data-brand-color]').oninput = (e) => b.color = e.target.value;
     block.querySelector('[data-brand-mult]').oninput = (e) => b.multiplier = parseFloat(e.target.value) || 0;
     block.querySelector('[data-brand-logo]').oninput = (e) => b.logo = e.target.value;
+    block.querySelector('[data-brand-name]').onchange = (e) => {
+      const ok = renameBrand(brandName, e.target.value);
+      if (!ok) { e.target.value = brandName; return; }
+      renderBrands();
+    };
+    block.querySelector('[data-del-brand]').onclick = () => {
+      if (Object.keys(DATA.brands).length <= 1) {
+        alert('En az bir marka kalmalı.');
+        return;
+      }
+      if (confirm(`"${brandName}" markasını ve tüm motor tiplerini silmek istediğinize emin misiniz?`)) {
+        delete DATA.brands[brandName];
+        renderBrands();
+      }
+    };
   });
+}
+
+function renameBrand(oldName, newName){
+  newName = (newName || '').trim();
+  if (!newName || newName === oldName) return false;
+  if (DATA.brands[newName]) {
+    alert('Bu isimde bir marka zaten var.');
+    return false;
+  }
+  const reordered = {};
+  Object.keys(DATA.brands).forEach(k => {
+    if (k === oldName) reordered[newName] = DATA.brands[oldName];
+    else reordered[k] = DATA.brands[k];
+  });
+  DATA.brands = reordered;
+  return true;
+}
+
+function addBrand(){
+  let base = 'Yeni Marka';
+  let name = base;
+  let n = 1;
+  while (DATA.brands[name]) {
+    n++;
+    name = base + ' ' + n;
+  }
+  DATA.brands[name] = {
+    multiplier: 1.0,
+    color: '#8C8C8C',
+    logo: '',
+    engines: [{ name: 'Motor tipi', factor: 1.0 }]
+  };
+  renderBrands();
 }
 
 function renderSections(){
